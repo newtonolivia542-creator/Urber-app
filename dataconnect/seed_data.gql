@@ -1,0 +1,56 @@
+mutation SeedDatabase @auth(level: PUBLIC, insecureReason: "This mutation is for seeding the database and does not contain sensitive operations") @transaction {
+  location_insertMany(data: [
+    {
+      address: "123 Main St",
+      latitude: 34.0522,
+      longitude: -118.2437,
+      name: "Example Location 1"
+    },
+    {
+      address: "456 Elm St",
+      latitude: 34.0523,
+      longitude: -118.2438,
+      name: "Example Location 2"
+    }
+  ])
+  user_insertMany(data: [
+    {
+      createdAt: "2024-04-03T00:00:00Z",
+      displayName: "Example User 1",
+      email: "user1@example.com",
+      isDriver: true,
+      phoneNumber: "123-456-7890",
+      photoUrl: "http://example.com/photo1.jpg"
+    },
+    {
+      createdAt: "2024-04-03T00:00:00Z",
+      displayName: "Example User 2",
+      email: "user2@example.com",
+      isDriver: false,
+      phoneNumber: "987-654-3210",
+      photoUrl: "http://example.com/photo2.jpg"
+    }
+  ])
+  vehicle_insertMany(data: [
+    {
+      driverId: "550e8400-e29b-41d4-a716-446655440000", # IN_PROD: Replace with a valid user ID
+      capacity: 4,
+      color: "Red",
+      licensePlate: "ABC-123",
+      make: "Toyota",
+      model: "Camry",
+      type: "Sedan",
+      year: 2020
+    },
+    {
+      driverId: "550e8400-e29b-41d4-a716-446655440001", # IN_PROD: Replace with a valid user ID
+      capacity: 7,
+      color: "Blue",
+      licensePlate: "DEF-456",
+      make: "Honda",
+      model: "Odyssey",
+      type: "Minivan",
+      year: 2022
+    }
+  ])
+}

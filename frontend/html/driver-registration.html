@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SoloRide — Driver Portal</title>
+  <link rel="stylesheet" href="../css/driver.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>SoloRide — Driver Portal</h1>
+
+
+    <section id="auth-section">
+      <h2>Register</h2>
+      <input id="regName" placeholder="Full name" />
+      <input id="regEmail" placeholder="Email" />
+      <input id="regPhone" placeholder="Phone (optional)" />
+      <input id="regVehicle" placeholder="Vehicle model" />
+      <input id="regPlate" placeholder="Plate number" />
+      <input id="regPassword" type="password" placeholder="Password" />
+      <button id="btnRegister">Register (creates account, sets status: pending)</button>
+
+      <hr />
+
+      <h2>Login</h2>
+      <input id="loginEmail" placeholder="Email" />
+      <input id="loginPassword" type="password" placeholder="Password" />
+      <button id="btnLogin">Login</button>
+
+
+      <p id="authMsg" class="muted"></p>
+    </section>
+
+
+    <section id="driver-dashboard" style="display:none">
+      <h2>Driver Dashboard</h2>
+      <p id="driverStatus"></p>
+      <button id="btnToggleStatus">Go Available / Go Offline</button>
+      <button id="btnSignOut">Sign out</button>
+      <div id="driverInfo"></div>
+    </section>
+</main>
+
+
+  <script type="module" src="firebase-setup.js"></script>
+  <script type="module" src="../js/app.js"></script>
+</body>
+</html>

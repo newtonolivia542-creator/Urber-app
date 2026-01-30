@@ -1,0 +1,42 @@
+
+/* styles.css - minimal clean styling */
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:#f5f8f6; margin:0;padding:20px;}
+.card{
+max-width:720px;margin:20px auto;
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 6px 24px rgba(20,20,20,0.06)}
+h1{color:#1f7a4a}
+
+input{
+display:block;
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ddd
+}
+button{
+background:#2e8b57;
+color:#fff;
+border:none;
+padding:10px 12px;border-radius:8px;
+cursor:pointer
+}
+button:hover{opacity:0.95}
+
+.muted{
+color:#666;
+font-size:13px
+}
+.driver-card{
+padding:10px;
+border:1px solid #eee;
+border-radius:8px;
+margin:8px 0
+}
+.small{
+font-size:13px;
+color:#444
+}

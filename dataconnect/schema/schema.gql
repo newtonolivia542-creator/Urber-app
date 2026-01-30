@@ -1,0 +1,50 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  phoneNumber: String
+  isDriver: Boolean
+}
+
+type Vehicle @table {
+  driver: User
+  make: String!
+  model: String!
+  year: Int!
+  licensePlate: String!
+  type: String!
+  color: String
+  capacity: Int
+}
+
+type Location @table {
+  latitude: Float!
+  longitude: Float!
+  address: String!
+  name: String
+}
+
+type Ride @table {
+  rider: User!
+  driver: User
+  vehicle: Vehicle
+  pickupLocation: Location!
+  dropoffLocation: Location!
+  requestedAt: Timestamp!
+  status: String!
+  actualPickupTime: Timestamp
+  actualDropoffTime: Timestamp
+  fare: Float
+  distance: Float
+  rating: Int
+  driverFeedback: String
+}
+
+type PaymentMethod @table {
+  user: User!
+  type: String!
+  lastFourDigits: String
+  cardHolderName: String
+  expirationDate: String
+}

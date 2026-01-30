@@ -1,0 +1,37 @@
+mutation CreateDemoUser @auth(level: PUBLIC, insecureReason: "This operation is for demo purposes and does not require authentication") {
+  user_insert(data: {
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    displayName: "demouser",
+    email: "demouser@example.com",
+    createdAt: "2024-04-26T12:00:00Z"
+  })
+}
+
+query GetMyRides @auth(level: USER) {
+  rides(where: {riderId: {eq_expr: "auth.uid"}}) {
+    id
+    pickupLocation {
+      address
+    }
+    dropoffLocation {
+      address
+    }
+    fare
+    status
+  }
+}
+
+mutation RequestRide($pickupLocationId: UUID!, $dropoffLocationId: UUID!) @auth(level: USER) {
+  ride_insert(data: {
+    riderId_expr: "auth.uid",
+    pickupLocationId: $pickupLocationId,
+    dropoffLocationId: $dropoffLocationId,
+    requestedAt_expr: "request.time",
+    status: "requested"
+  })
+}
+
+mutation UpdateDriverVehicle($vehicleId: UUID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  user_update(key: {id_expr: "auth.uid"}, data: {isDriver: true})
+  vehicle_update(id: $vehicleId, data: {driverId_expr: "auth.uid"})
+}
