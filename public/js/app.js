@@ -1,3 +1,7 @@
+// 1. Import initialized instances from your local setup file
+//import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+//import { initializeApp } from "firebase/app";
+//import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase.js";
 import {
   createUserWithEmailAndPassword,
@@ -25,11 +29,13 @@ if (registerForm) {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
 
+      // Save user role to Firestore
       await setDoc(doc(db, "users", cred.user.uid), {
         email: email,
         role: role
       });
 
+      // Redirect based on role
       if (role === "driver") {
         window.location.href = "driver-registration.html";
       } else {
@@ -37,6 +43,7 @@ if (registerForm) {
       }
 
     } catch (err) {
+      console.error("Register Error:", err);
       alert(err.message);
     }
   });
@@ -57,7 +64,7 @@ if (loginForm) {
 
       if (snap.exists()) {
         const role = snap.data().role;
-
+        // Correct redirection
         if (role === "driver") {
           window.location.href = "driver-dashboard.html";
         } else {
@@ -66,6 +73,7 @@ if (loginForm) {
       }
 
     } catch (err) {
+      console.error("Login Error:", err);
       alert(err.message);
     }
   });
@@ -73,21 +81,30 @@ if (loginForm) {
 
 /* ================= PAGE PROTECTION ================= */
 onAuthStateChanged(auth, async (user) => {
-  if (!user) return;
-
-  const snap = await getDoc(doc(db, "users", user.uid));
-  if (!snap.exists()) return;
-
-  const role = snap.data().role;
-  const page = window.location.pathname;
-
-  if (page.includes("driver-dashboard") && role !== "driver") {
-    window.location.href = "dashboard.html";
+  if (!user) {
+    // Optional: Redirect to login if not authenticated and on a private page
+    return;
   }
-  if (page.includes("dashboard") && role !== "passenger") {
-    window.location.href = "driver-dashboard.html";
+
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (!snap.exists()) return;
+
+    const role = snap.data().role;
+    const page = window.location.pathname;
+
+    // Protection logic
+    if (page.includes("driver-dashboard.html") && role !== "driver") {
+      window.location.href = "dashboard.html";
+    }
+    if (page.includes("dashboard.html") && role === "driver") {
+      window.location.href = "driver-dashboard.html";
+    }
+  } catch (err) {
+    console.error("Auth State Error:", err);
   }
 });
+
 /* ================= LOGOUT ================= */
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
