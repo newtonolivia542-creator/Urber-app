@@ -20,11 +20,12 @@ let isOnline = false;
 // check login
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "index.html";
+    window.location.href = "../html/index.html";
     return;
   }
 
   driverId = user.uid;
+  startLocationUpdates();
 
   const driverSnap = await getDoc(doc(db, "users", driverId));
   document.getElementById("driverName").innerText =

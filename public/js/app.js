@@ -2,7 +2,7 @@
 //import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 //import { initializeApp } from "firebase/app";
 //import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase.js";
+import { auth, db, rtdb } from "./firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -40,9 +40,9 @@ if (registerForm) {
 
       // Redirect based on role
       if (role === "driver") {
-        window.location.href = "driver-registration.html";
+        window.location.href = "../html/driver-registration.html";
       } else {
-        window.location.href = "dashboard.html";
+        window.location.href = "../html/dashboard.html";
       }
 
     } catch (err) {
@@ -68,13 +68,13 @@ if (loginForm) {
       let role = "passenger";
 
       if (snap.exists()) {
-        const role = snap.data().role;
-        // Correct redirection
-        if (role === "driver") {
-    window.location.href = "../html/driver-dashboard.html";
-  } else {
-          window.location.href = "dashboard.html";
-        }
+        role = snap.data().role;
+     }
+
+      if (role === "driver") {
+        window.location.href = "../html/driver-dashboard.html";
+      } else {
+        window.location.href = "../html/dashboard.html";
       }
 
     } catch (err) {
@@ -100,18 +100,21 @@ onAuthStateChanged(auth, async (user) => {
 
     // Protection logic
     if (page.includes("driver-dashboard.html") && role !== "driver") {
-      window.location.href = "dashboard.html";
+      window.location.href = "../html/dashboard.html";
     }
     if (page.includes("dashboard.html") && role === "driver") {
-      window.location.href = "driver-dashboard.html";
+      window.location.href = "../html/driver-dashboard.html";
     }
   } catch (err) {
     console.error("Auth State Error:", err);
   }
 });
 
-const db = getDatabase();
-const driversRef = ref(db, "drivers");
+//const db = getDatabase();
+//const rtdb = getDatabase();
+//import { rtdb } from "./firebase.js";
+//const driversRef = ref(db, "drivers");
+const driversRef = ref(rtdb, "drivers");
 
 onValue(driversRef, (snapshot) => {
 
@@ -139,6 +142,6 @@ const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
     await signOut(auth);
-    window.location.href = "login.html";
+    window.location.href = "../html/login.html";
   });
 }

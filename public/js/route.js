@@ -1,9 +1,11 @@
-let map, directionsService, directionsRenderer;
+let map;
+let directionsService;
+let directionsRenderer;
 
 function initMap() {
 
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 6.3156, lng: -10.8074 }, // Monrovia
+    center: { lat: 6.3156, lng: -10.8074 },
     zoom: 13
   });
 
@@ -20,8 +22,14 @@ function initMap() {
 }
 
 function calculateRoute() {
-  const pickup = document.getElementById("pickup").value;
-  const destination = document.getElementById("destination").value;
+
+  const pickup = document.getElementById("from").value;
+  const destination = document.getElementById("to").value;
+
+  if (!pickup || !destination) {
+    alert("Please enter both locations");
+    return;
+  }
 
   directionsService.route(
     {
