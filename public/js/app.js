@@ -16,6 +16,9 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+import { getDatabase, ref, onValue } 
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
 /* ================= REGISTER ================= */
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
@@ -62,12 +65,14 @@ if (loginForm) {
       const cred = await signInWithEmailAndPassword(auth, email, password);
       const snap = await getDoc(doc(db, "users", cred.user.uid));
 
+      let role = "passenger";
+
       if (snap.exists()) {
         const role = snap.data().role;
         // Correct redirection
         if (role === "driver") {
-          window.location.href = "driver-dashboard.html";
-        } else {
+    window.location.href = "../html/driver-dashboard.html";
+  } else {
           window.location.href = "dashboard.html";
         }
       }
@@ -103,6 +108,30 @@ onAuthStateChanged(auth, async (user) => {
   } catch (err) {
     console.error("Auth State Error:", err);
   }
+});
+
+const db = getDatabase();
+const driversRef = ref(db, "drivers");
+
+onValue(driversRef, (snapshot) => {
+
+  const drivers = snapshot.val();
+
+  for (let id in drivers) {
+
+    const driver = drivers[id];
+
+    new google.maps.Marker({
+      position: {
+        lat: driver.lat,
+        lng: driver.lng
+      },
+      map: map,
+      title: "Driver Available"
+    });
+
+  }
+
 });
 
 /* ================= LOGOUT ================= */

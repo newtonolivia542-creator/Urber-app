@@ -43,6 +43,35 @@ statusBtn.onclick = async () => {
   });
 };
 
+function startLocationUpdates() {
+
+  if (!navigator.geolocation) {
+    console.log("Geolocation not supported");
+    return;
+  }
+
+  navigator.geolocation.watchPosition(async (position) => {
+
+    if (!isOnline) return; 
+
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+
+    await updateDoc(doc(db, "users", driverId), {
+      location: {
+        lat: lat,
+        lng: lng
+      }
+    });
+
+  }, (error) => {
+    console.log("Location error:", error);
+  }, {
+    enableHighAccuracy: true
+  });
+
+}
+
 // listen for passenger rides
 function listenForRides() {
   const q = query(

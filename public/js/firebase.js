@@ -1,23 +1,15 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-//import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-//import { initializeApp } from "firebase/app";
-//import { getAuth } from "firebase/auth";
-//import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-//import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-//import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// Firebase CDN imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-//import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBpYr-nlK2I5B9hYfNrzW5zsHSbcvC1OhM",
   authDomain: "urber-liberia.firebaseapp.com",
+  databaseURL: "https://urber-liberia.firebaseapp.com/",
   projectId: "urber-liberia",
   storageBucket: "urber-liberia.firebasestorage.app",
   messagingSenderId: "386626435763",
@@ -25,17 +17,11 @@ const firebaseConfig = {
   measurementId: "G-WYKKCHLCJ0"
 };
 
-const analytics = getAnalytics(app);
-const app = initializeApp(firebaseConfig);
-//const auth = getAuth(app);
-//const db = getFirestore(app);
-
-
-//export { auth, db };
 // Initialize Firebase
-//const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// EXPORT these so app.js can see them
-//export const auth = getAuth(app);
-//export const db = getFirestore(app);
-//export const analytics = getAnalytics(app);
+// Initialize services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const rtdb = getDatabase(app);
+export const analytics = getAnalytics(app);
