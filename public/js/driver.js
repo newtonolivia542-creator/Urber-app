@@ -28,6 +28,9 @@ onAuthStateChanged(auth, async (user) => {
   driverId = user.uid;
   startLocationUpdates();
 
+  const docRef = doc(db, "users", driverId);
+  const driverSnap = await getDoc(docRef);
+
   if (driverSnap.exists()) {
   
     const data = driverSnap.data();
