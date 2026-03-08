@@ -27,23 +27,28 @@ onAuthStateChanged(auth, async (user) => {
   driverId = user.uid;
   startLocationUpdates();
 
-  const driverSnap = await getDoc(doc(db, "users", driverId));
-
-  //const data = driverSnap.data();
-
   if (driverSnap.exists()) {
-    const data = driverSnap.data();
 
+    const data = driverSnap.data();
+  
     document.getElementById("driverName").innerText =
       "Welcome, " + (data.fullName || data.email || "Driver");
+  
   } else {
-    // Handle the case where the user document does not exist
-    console.warn("User document not found for driverId:", driverId);
-    document.getElementById("driverName").innerText = "Welcome, Driver";
-
-//document.getElementById("driverName").innerText =
-  //"Welcome, " + (data.fullName || data.email || "Driver");
-}
+  
+    console.warn("Creating new driver document:", driverId);
+  
+    await setDoc(doc(db, "users", driverId), {
+      email: user.email,
+      fullName: user.displayName || "Driver",
+      online: false,
+      role: "driver",
+      location: null
+    });
+  
+    document.getElementById("driverName").innerText =
+      "Welcome, " + (user.displayName || user.email);
+  }
   listenForRides();
 });
 
@@ -95,6 +100,11 @@ function listenForRides() {
 
   onSnapshot(q, (snapshot) => {
     ridesDiv.innerHTML = "";
+
+    if (snapshot.empty) {
+      ridesDiv.innerHTML = "<p>No ride requests available</p>";
+      return;
+    }
 
     snapshot.forEach((docu) => {
       const ride = docu.data();
