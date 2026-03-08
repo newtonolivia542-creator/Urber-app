@@ -8,7 +8,8 @@ import {
   onSnapshot,
   doc,
   updateDoc,
-  getDoc
+  getDoc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const ridesDiv = document.getElementById("rides");
@@ -28,7 +29,7 @@ onAuthStateChanged(auth, async (user) => {
   startLocationUpdates();
 
   if (driverSnap.exists()) {
-
+  
     const data = driverSnap.data();
   
     document.getElementById("driverName").innerText =
