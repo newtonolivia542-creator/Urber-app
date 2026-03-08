@@ -28,14 +28,14 @@ onAuthStateChanged(auth, async (user) => {
   startLocationUpdates();
 
   const driverSnap = await getDoc(doc(db, "users", driverId));
-  
-  //const data = driverSnap.data();
-  
-  if (driverSnap.exists()) {
-  const data = driverSnap.data();
 
-document.getElementById("driverName").innerText =
-  "Welcome, " + (data.fullName || data.email || "Driver");
+  //const data = driverSnap.data();
+
+  if (driverSnap.exists()) {
+    const data = driverSnap.data();
+
+    document.getElementById("driverName").innerText =
+      "Welcome, " + (data.fullName || data.email || "Driver");
   } else {
     // Handle the case where the user document does not exist
     console.warn("User document not found for driverId:", driverId);
