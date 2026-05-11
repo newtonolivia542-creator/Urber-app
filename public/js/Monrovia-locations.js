@@ -239,12 +239,3 @@ const locations = {
   // Initialize UI
   populateDatalistAndUI();
   loadSettingsToUI();
-
-  document.getElementById("requestRide").addEventListener("click", () => {
-
-    const pickup = document.getElementById("from").value;
-    const destination = document.getElementById("to").value;
-  
-    alert("Ride requested from " + pickup + " to " + destination);
-  
-  });

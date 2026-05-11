@@ -12,9 +12,12 @@ function initMap() {
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
 
-  directionsRenderer.setMap(map);
+// DO NOT RUN ROUTING ON LOGIN PAGE
+const currentPage = window.location.pathname;
 
-  const searchBtn = document.getElementById("searchBtn");
+if (currentPage.includes("index.html")) {
+  console.log("Login page detected — routing skipped");
+} else {
 
   if (searchBtn) {
     searchBtn.addEventListener("click", calculateRoute);
@@ -39,14 +42,18 @@ function calculateRoute() {
     },
     (result, status) => {
 
-      if (status === "OK") {
+    if (!userSnap.exists()) {
+      console.log("User profile not found");
+      return;
+    }
 
         directionsRenderer.setDirections(result);
 
         const distance =
           result.routes[0].legs[0].distance.value / 1000;
 
-        const fare = distance * 45;
+    // DRIVER ROUTE
+    if (data.role === "driver") {
 
         document.getElementById("result").innerHTML =
           "Distance: " + distance.toFixed(2) + " km<br>" +

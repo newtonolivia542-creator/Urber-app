@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Passenger Dashboard</title>
     
-    <script type="module" src="../js/firebase.js"></script>
     <script type="module" src="../js/app.js"></script>
-    <script type="module" src="../js/route.js"></script>
     <link rel="stylesheet" href="../css/driver.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
   <header>
     <h1>🚖 SoloRide Liberia</h1>
     <p>Find distance, time & fares for routes in Monrovia</p>
+    <button id="logoutBtn" class="logout-btn">
+      Logout
+    </button>
   </header>
 
   <main>
@@ -74,6 +82,19 @@
       <div id="placesListUI" class="places-grid"></div>
     </section>
   </main>
+
+  <section id="availableDrivers">
+
+    <h2>🚗 Available Drivers</h2>
+  
+    <div id="driverList">
+  
+      <p>No drivers online.</p>
+  
+    </div>
+  
+  </section>
+  <div id="map"></div>
 
   <footer>
     <p>© 2025 SoloRide Liberia | Built by Solo Tech</p>

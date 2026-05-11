@@ -132,7 +132,10 @@ function listenForRides() {
   });
 }
 
-// accept ride
+
+
+
+// ACCEPT RIDE
 window.acceptRide = async function (rideId) {
   await updateDoc(doc(db, "rides", rideId), {
     status: "accepted",
