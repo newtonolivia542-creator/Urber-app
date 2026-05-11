@@ -19,6 +19,7 @@ import {
   getDatabase,
   ref,
   set,
+  onValue
 }
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
@@ -104,6 +105,20 @@ onAuthStateChanged(auth, async (user) => {
 
   loadRideRequests();
 });
+
+let driverMap =
+  L.map("driverMap")
+  .setView([6.3156, -10.8074], 13);
+
+L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    attribution:
+      "&copy; OpenStreetMap contributors"
+  }
+).addTo(driverMap);
+
+let passengerMarker;
 
 /*==========Signout Function========== */
 
@@ -206,6 +221,13 @@ function loadRideRequests() {
         ride.driverId !== currentDriver.uid
       ) {
         return;
+      }
+      if (
+        ride.status === "accepted" &&
+        ride.driverId === currentDriver.uid
+      ) {
+      
+        trackPassenger(ride.passengerId);
       }
 
       foundRide = true;
@@ -343,3 +365,46 @@ window.cancelRide = async function(rideId) {
 
   alert("Ride cancelled");
 };
+
+//==========Track Passenger =============//
+
+function trackPassenger(passengerId) {
+
+  const passengerRef =
+    ref(
+      rtdb,
+      "passengersLive/" + passengerId
+    );
+
+  onValue(passengerRef, (snapshot) => {
+
+    const data = snapshot.val();
+
+    if (!data) return;
+
+    const lat = data.lat;
+    const lng = data.lng;
+
+    console.log(
+      "Passenger location:",
+      lat,
+      lng
+    );
+
+    if (!passengerMarker) {
+
+      passengerMarker =
+        L.marker([lat, lng])
+        .addTo(driverMap)
+        .bindPopup("Passenger");
+    }
+
+    else {
+
+      passengerMarker
+        .setLatLng([lat, lng]);
+    }
+
+    driverMap.setView([lat, lng], 15);
+  });
+}

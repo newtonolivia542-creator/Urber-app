@@ -28,7 +28,8 @@ import {
 
 import {
   ref,
-  onValue
+  onValue,
+  set
 }
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
@@ -487,3 +488,40 @@ function trackDriver(driverId) {
     map.setView(position, 15);
   });
 }
+
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) return;
+
+  navigator.geolocation.watchPosition(
+
+    async (position) => {
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      await set(
+        ref(rtdb, "passengersLive/" + user.uid),
+        {
+          lat,
+          lng,
+          updatedAt: Date.now()
+        }
+      );
+
+      console.log(
+        "Passenger GPS:",
+        lat,
+        lng
+      );
+    },
+
+    (error) => {
+      console.error(error);
+    },
+
+    {
+      enableHighAccuracy: true
+    }
+  );
+});
