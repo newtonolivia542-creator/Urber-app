@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoloRide Admin Dashboard</title>
+
+  <link rel="stylesheet" href="../css/admin.css" />
+  <script type="module" src="../js/admin.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <h1>🛡️ SoloRide Liberia Admin</h1>
+
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main class="admin-container">
+
+    <section class="stats-grid">
+      <div class="card">
+        <h2 id="totalUsers">0</h2>
+        <p>Total Users</p>
+      </div>
+
+      <div class="card">
+        <h2 id="totalDrivers">0</h2>
+        <p>Total Drivers</p>
+      </div>
+
+      <div class="card">
+        <h2 id="onlineDrivers">0</h2>
+        <p>Drivers Online</p>
+      </div>
+
+      <div class="card">
+        <h2 id="totalRides">0</h2>
+        <p>Total Rides</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Users & Drivers</h2>
+      <div id="usersContainer"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Ride Requests</h2>
+      <div id="ridesContainer"></div>
+    </section>
+
+  </main>
+
+</body>
+</html>
