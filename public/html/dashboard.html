@@ -29,10 +29,23 @@
       <h2>Find Your Route</h2>
 
       <label for="from">From:</label>
-      <input type="text" id="from" placeholder="Enter starting location (e.g. red light)" list="placesList" />
+      <!--input type="text" id="from" placeholder="Enter starting location (e.g. red light)" list="placesList" /-->
+      <input
+        type="text"
+        id="from"
+        autocomplete="off"
+      />
+
+      <div id="pickupResults"></div>
 
       <label for="to">To:</label>
-      <input type="text" id="to" placeholder="Enter destination (e.g. broad street)" list="placesList" />
+      <!--input type="text" id="to" placeholder="Enter destination (e.g. broad street)" list="placesList" /-->
+      <input
+        type="text"
+        id="to"
+        autocomplete="off"
+      />
+    <div id="destinationResults"></div>
 
       <label for="payment">Payment Method</label>
 <select id="payment">

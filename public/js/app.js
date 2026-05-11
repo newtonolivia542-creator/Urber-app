@@ -525,3 +525,67 @@ onAuthStateChanged(auth, (user) => {
     }
   );
 });
+
+
+
+//=====Another Geo location=====//
+
+async function setupAutocomplete(
+  inputId,
+  resultsId
+) {
+
+  const input =
+    document.getElementById(inputId);
+
+  const results =
+    document.getElementById(resultsId);
+
+  input.addEventListener("input", async () => {
+
+    const query = input.value.trim();
+
+    if (query.length < 3) {
+      results.innerHTML = "";
+      return;
+    }
+
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${query}, Liberia`
+    );
+
+    const data = await response.json();
+
+    results.innerHTML = "";
+
+    data.forEach((place) => {
+
+      const item =
+        document.createElement("div");
+
+      item.classList.add("suggestion-item");
+
+      item.innerText =
+        place.display_name;
+
+      item.addEventListener("click", () => {
+
+        input.value =
+          place.display_name;
+
+        input.dataset.lat =
+          place.lat;
+
+        input.dataset.lng =
+          place.lon;
+
+        results.innerHTML = "";
+      });
+
+      results.appendChild(item);
+    });
+  });
+}
+setupAutocomplete("from", "pickupResults");
+
+setupAutocomplete("to", "destinationResults");

@@ -168,7 +168,149 @@ const locations = {
       <strong>Payment Method:</strong> ${paymentMethod}<br><br>
       <a href="${mapsUrl}" target="_blank">Open route in Google Maps</a>
     `);
-  }
+  } */
+
+    function findRoute() {
+
+      const fromInput =
+        document.getElementById("from");
+    
+      const toInput =
+        document.getElementById("to");
+    
+      const fromName =
+        fromInput.value.trim();
+    
+      const toName =
+        toInput.value.trim();
+    
+      if (!fromName || !toName) {
+    
+        showResult(
+          "Please enter both locations."
+        );
+    
+        return;
+      }
+    
+      // LIVE coordinates from autocomplete
+      let lat1 =
+        parseFloat(fromInput.dataset.lat);
+    
+      let lon1 =
+        parseFloat(fromInput.dataset.lng);
+    
+      let lat2 =
+        parseFloat(toInput.dataset.lat);
+    
+      let lon2 =
+        parseFloat(toInput.dataset.lng);
+    
+      // BACKUP to old locations list
+      if (
+        (!lat1 || !lon1) &&
+        locations[normalizeName(fromName)]
+      ) {
+    
+        lat1 =
+          locations[
+            normalizeName(fromName)
+          ].lat;
+    
+        lon1 =
+          locations[
+            normalizeName(fromName)
+          ].lon;
+      }
+    
+      if (
+        (!lat2 || !lon2) &&
+        locations[normalizeName(toName)]
+      ) {
+    
+        lat2 =
+          locations[
+            normalizeName(toName)
+          ].lat;
+    
+        lon2 =
+          locations[
+            normalizeName(toName)
+          ].lon;
+      }
+    
+      // Still no coordinates?
+      if (
+        !lat1 || !lon1 ||
+        !lat2 || !lon2
+      ) {
+    
+        showResult(`
+          Location not found.
+          Please choose from suggestions.
+        `);
+    
+        return;
+      }
+    
+      const distanceKm =
+        haversine(
+          lat1,
+          lon1,
+          lat2,
+          lon2
+        );
+    
+      const timeMin =
+        estimateTimeMinutes(
+          distanceKm
+        );
+    
+      const fare =
+        calculateFare(
+          distanceKm
+        );
+    
+      const paymentMethod =
+        document.getElementById("payment").value;
+    
+      if (!paymentMethod) {
+    
+        showResult(
+          "Please select a payment method."
+        );
+    
+        return;
+      }
+    
+      const mapsUrl =
+        `https://www.google.com/maps/dir/?api=1&origin=${lat1},${lon1}&destination=${lat2},${lon2}`;
+    
+      showResult(`
+        <strong>From:</strong>
+        ${fromName}<br>
+    
+        <strong>To:</strong>
+        ${toName}<br>
+    
+        <strong>Distance:</strong>
+        ${distanceKm.toFixed(2)} km<br>
+    
+        <strong>Estimated Time:</strong>
+        ${timeMin} mins<br>
+    
+        <strong>Estimated Fare:</strong>
+        LD$ ${fare}<br><br>
+    
+        <strong>Payment Method:</strong>
+        ${paymentMethod}<br><br>
+    
+        <a href="${mapsUrl}"
+           target="_blank">
+           Open Route In Google Maps
+        </a>
+      `);
+    }
   
   // ---------- Add / update a location ----------
   function addOrUpdateLocation() {
