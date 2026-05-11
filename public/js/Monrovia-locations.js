@@ -116,7 +116,7 @@ const locations = {
   }
   
   // ---------- Core: find route ----------
-  function findRoute() {
+  /*function findRoute() {
     const fromRaw = document.getElementById("from").value;
     const toRaw = document.getElementById("to").value;
     const from = normalizeName(fromRaw);
